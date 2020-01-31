@@ -1,0 +1,30 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+
+    # Build dev image of client service
+    - docker build -t augustbright/client-test -f ./complex-client/Dockerfile.dev ./complex-client
+
+scripts:
+
+    # Run test suite on dev service
+    - docker run -e CI=true augustbright/client-test npm run test
+
+after_success:
+
+    # Build production images    
+    - docker build -t augustbright/complex-client ./complex-client
+    - docker build -t augustbright/complex-server ./complex-server
+    - docker build -t augustbright/complex-worker ./complex-worker
+    - docker build -t augustbright/complex-nginx ./complex-nginx
+
+    # log in to docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # Push images to Docker Hub
+    - docker push augustbright/complex-client
+    - docker push augustbright/complex-server
+    - docker push augustbright/complex-worker
+    - docker push augustbright/complex-nginx
