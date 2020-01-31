@@ -32,8 +32,8 @@
                 }
             ],
             "links": [
-                "client",
-                "server"
+                "complex-client",
+                "complex-server"
             ],
             "memory": 128
         }
