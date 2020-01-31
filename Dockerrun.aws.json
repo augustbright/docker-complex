@@ -1,0 +1,37 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "complex-client",
+            "image": "augustbright/complex-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "complex-server",
+            "image": "augustbright/complex-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "complex-worker",
+            "image": "augustbright/complex-worker",
+            "essential": false
+        },
+        {
+            "name": "complex-nginx",
+            "image": "augustbright/complex-nginx",
+            "essential": true,
+            "portMappgins": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "server"
+            ]
+        }
+    ]
+}
